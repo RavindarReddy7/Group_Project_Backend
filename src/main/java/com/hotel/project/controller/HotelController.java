@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hotel.project.Model.Hotel;
 import com.hotel.project.repository.HotelRepository;
+import com.hotel.project.service.HotelService;
+
 
 @RestController
-@RequestMapping("/search")
-public class SearchController {
+@RequestMapping("/hotel-booking")
+public class HotelController {
 
 	@Autowired
 	MongoTemplate mongoTemplate;
@@ -25,19 +27,19 @@ public class SearchController {
 	@Autowired
 	public HotelRepository hotelrepository;
 
-	@GetMapping
-	public List<String> searchHotel(@PathVariable String location) {
+	
+	public HotelService hotelservice;
+	
+	@Autowired
+	public HotelController(HotelService hotelservice){
+	       this.hotelservice = hotelservice;
+	    }
+	
+	@GetMapping("/searchHotel/{location}")
+	public List<Hotel> searchHotel(@PathVariable String location) {
 
-		hotelrepository.findAll();
+		return hotelservice.searchHotelByLocation(location);
 
-		return null;
-
-	}
-
-	@GetMapping("/test")
-	public String testDocker() {
-
-		return "hello";
 	}
 
 	@PostMapping("/savehotel")
